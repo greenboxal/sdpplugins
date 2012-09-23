@@ -21,7 +21,6 @@ public:
 	virtual INT32 Disabled();
 	virtual LPCTSTR GetInputValue();
 	virtual DiffData *GeneratePatch();
-	virtual bool GenerateNewPatch();
 	virtual DiffData *GetDiffData();
 
 protected:

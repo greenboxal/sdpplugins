@@ -58,7 +58,7 @@ LPCTSTR WDGPlugin::GetInputValue()
 	return NULL;
 }
 
-bool WDGPlugin::GenerateNewPatch()
+DiffData *WDGPlugin::GeneratePatch()
 {
 	WeeDiffGenPlugin::FINDDATA sFindData = {0};
 	CHAR szMsg[256];
@@ -83,7 +83,7 @@ bool WDGPlugin::GenerateNewPatch()
 	{
 		sprintf_s(szMsg, 256, "WDGRemoveLoginAutoClose :: Part 1 :: %s", lpszMsg);
 		m_dgc->LogMsg(szMsg);
-		return false;
+		return NULL;
 	}
 
 	try
@@ -101,110 +101,7 @@ bool WDGPlugin::GenerateNewPatch()
 	{
 		sprintf_s(szMsg, 256, "WDGRemoveLoginAutoClose :: Part 2 :: %s", lpszMsg);
 		m_dgc->LogMsg(szMsg);
-		return false;
-	}
-
-	return true;
-}
-
-DiffData *WDGPlugin::GeneratePatch()
-{
-	WeeDiffGenPlugin::FINDDATA sFindData = {0};
-	CHAR szMsg[256];
-	m_diffdata.clear();
-
-	UINT32 uOffset = 0;
-
-	if (!GenerateNewPatch())
-	{
-		try
-		{
-			ZeroMemory(&sFindData, sizeof(sFindData));
-			sFindData.lpData = "'readfolder'";
-			sFindData.uMask = WFD_PATTERN;
-			UINT32 uOffsetA = m_dgc->FindStr(&sFindData, true);
-
-			ZeroMemory(&sFindData, sizeof(sFindData));
-			sFindData.lpData = "'loading'";
-			sFindData.uMask = WFD_PATTERN;
-			UINT32 uOffsetB = m_dgc->FindStr(&sFindData, true);
-
-			ZeroMemory(&sFindData, sizeof(sFindData));
-			sFindData.lpData = new CHAR[28];
-			sFindData.uDataSize = 28;
-			sFindData.lpszSection = ".text";
-			sFindData.chWildCard = '\xAB';
-			sFindData.uMask =  WFD_SECTION | WFD_WILDCARD;
-
-			memcpy(sFindData.lpData, "\x68\x00\x00\x00\x00\x8B\xAB\xE8\xAB\xAB\xAB\xAB\x85\xC0\x74\x07\xC6\x05\xAB\xAB\xAB\xAB\x01\x68\x00\x00\x00\x00", 28);
-			memcpy(sFindData.lpData + 1, (CHAR *)&uOffsetA, 4);
-			memcpy(sFindData.lpData + 24, (CHAR *)&uOffsetB, 4);
-
-			uOffset = m_dgc->Match(&sFindData);
-
-			delete[] sFindData.lpData;
-		}
-		catch (LPCSTR lpszMsg)
-		{
-			sprintf_s(szMsg, 256, "WDGReadDataFolderFirst :: Part 1 :: %s", lpszMsg);
-			m_dgc->LogMsg(szMsg);
-			return NULL;
-		}
-
-		try
-		{
-			ZeroMemory(&sFindData, sizeof(sFindData));
-			sFindData.lpData = "\x90\x90";
-			sFindData.uDataSize = 2;
-
-			m_dgc->Replace(CBAddDiffData, uOffset + 14, &sFindData);
-		} 
-		catch (LPCSTR lpszMsg)
-		{
-			sprintf_s(szMsg, 256, "WDGReadDataFolderFirst :: Part 2 :: %s", lpszMsg);
-			m_dgc->LogMsg(szMsg);
-			return NULL;
-		}
-
-		try
-		{
-			UINT32 uOffsetC = m_dgc->GetDWORD32(uOffset + 18);
-
-			ZeroMemory(&sFindData, sizeof(sFindData));
-			sFindData.lpData = new CHAR[16];
-			sFindData.uDataSize = 16;
-			sFindData.lpszSection = ".text";
-			sFindData.chWildCard = '\xAB';
-			sFindData.uMask = WFD_SECTION | WFD_WILDCARD;
-
-			memcpy(sFindData.lpData, "\x80\x3D\x00\x00\x00\x00\x00\x57\xB9\xAB\xAB\xAB\x00\x56\x74\x23", 16);
-			memcpy(sFindData.lpData + 2, (CHAR *)&uOffsetC, 4);
-
-			uOffset = m_dgc->Match(&sFindData);
-
-			delete[] sFindData.lpData;
-		} 
-		catch (LPCSTR lpszMsg)
-		{
-			sprintf_s(szMsg, 256, "WDGReadDataFolderFirst :: Part 3 :: %s", lpszMsg);
-			m_dgc->LogMsg(szMsg);
-			return NULL;
-		}
-
-		try
-		{
-			ZeroMemory(&sFindData, sizeof(sFindData));
-			sFindData.lpData = "\x90\x90";
-			sFindData.uDataSize = 2;
-
-			m_dgc->Replace(CBAddDiffData, uOffset + 14, &sFindData);
-		} 
-		catch (LPCSTR lpszMsg)
-		{
-			sprintf_s(szMsg, 256, "WDGReadDataFolderFirst :: Part 4 :: %s", lpszMsg);
-			m_dgc->LogMsg(szMsg);
-			return NULL;
-		}
+		return NULL;
 	}
 
 	return &m_diffdata;
