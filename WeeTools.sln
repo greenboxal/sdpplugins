@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WDGReadDataFolderFirst", "W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WDGForceClientHashPacket", "WDGForceClientHashPacket\WDGForceClientHashPacket.vcxproj", "{F9770F51-0B6B-4C78-B756-53298667D3D1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WDGRemoveLoginAutoClose", "WDGRemoveLoginAutoClose\WDGRemoveLoginAutoClose.vcxproj", "{2E5F2986-99C5-4567-A6C6-3A9546647177}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{F9770F51-0B6B-4C78-B756-53298667D3D1}.Debug|Win32.Build.0 = Debug|Win32
 		{F9770F51-0B6B-4C78-B756-53298667D3D1}.Release|Win32.ActiveCfg = Release|Win32
 		{F9770F51-0B6B-4C78-B756-53298667D3D1}.Release|Win32.Build.0 = Release|Win32
+		{2E5F2986-99C5-4567-A6C6-3A9546647177}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E5F2986-99C5-4567-A6C6-3A9546647177}.Debug|Win32.Build.0 = Debug|Win32
+		{2E5F2986-99C5-4567-A6C6-3A9546647177}.Release|Win32.ActiveCfg = Release|Win32
+		{2E5F2986-99C5-4567-A6C6-3A9546647177}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
